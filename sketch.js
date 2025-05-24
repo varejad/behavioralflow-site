@@ -1,20 +1,43 @@
 let agents = [];
 
+function gerarDadosMock() {
+  const dados = [];
+
+  // Simula 5 agentes com posições aleatórias
+  for (let i = 0; i < 5; i++) {
+    dados.push({
+      id: i,
+      x: Math.random() * width,
+      y: Math.random() * height,
+    });
+  }
+
+  return dados;
+}
+
+
 function setup() {
   createCanvas(600, 400);
   
-  // Criar 10 agentes com posições aleatórias
-  for (let i = 0; i < 10; i++) {
-    agents.push(new Agent(random(width), random(height)));
-  }
+  // Carrega dados mock pela primeira vez
+  agents = gerarDadosMock();
+
+  // Atualiza os dados mock a cada 2 segundos
+  setInterval(() => {
+    agents = gerarDadosMock();
+  }, 2000);
 }
 
 function draw() {
   background(240);
 
   for (let agent of agents) {
-    agent.move();
-    agent.display();
+    fill(100, 150, 255);
+    ellipse(agent.x, agent.y, 30, 30);
+
+    fill(0);
+    textAlign(CENTER, CENTER);
+    text(agent.id, agent.x, agent.y);
   }
 }
 
