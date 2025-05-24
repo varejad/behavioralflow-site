@@ -11,3 +11,30 @@ main {
   justify-content: center;
   margin-top: 20px;
 }
+
+nav {
+  background-color: #222;
+  padding: 10px;
+}
+
+nav a {
+  color: #fff;
+  text-decoration: none;
+  margin: 0 10px;
+  font-weight: bold;
+}
+
+nav a.active {
+  text-decoration: underline;
+}
+
+main.sobre {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 0 20px;
+  text-align: left;
+}
+
+main.sobre section {
+  margin-bottom: 30px;
+}
