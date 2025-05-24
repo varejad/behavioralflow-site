@@ -1,5 +1,22 @@
 let agents = [];
 
+function mockFetchAgents() {
+  return new Promise((resolve) => {
+    const data = [];
+
+    for (let i = 0; i < 5; i++) {
+      data.push({
+        id: i,
+        x: Math.random() * width,
+        y: Math.random() * height,
+      });
+    }
+
+    // Simulate network delay
+    setTimeout(() => resolve(data), 200);
+  });
+}
+
 function gerarDadosMock() {
   const dados = [];
 
@@ -24,7 +41,9 @@ function setup() {
 
   // Atualiza os dados mock a cada 2 segundos
   setInterval(() => {
-    agents = gerarDadosMock();
+    mockFetchAgents().then((data) => {
+      agents = data;
+    });
   }, 2000);
 }
 
