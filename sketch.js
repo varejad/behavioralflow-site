@@ -1,4 +1,16 @@
 let agents = [];
+let frameCounter = 0;
+const FETCH_INTERVAL_FRAMES = 30; // Atualiza a cada 30 frames (~2 vezes por segundo)
+
+function fetchAgentsFromAPI() {
+  return fetch('https://behavioralflow-api.onrender.com/estate')
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    });
+}
 
 function mockFetchAgents() {
   return new Promise((resolve) => {
@@ -17,6 +29,7 @@ function mockFetchAgents() {
   });
 }
 
+/*
 function gerarDadosMock() {
   const dados = [];
 
@@ -31,35 +44,53 @@ function gerarDadosMock() {
 
   return dados;
 }
-
+*/
 
 function setup() {
   createCanvas(600, 400);
   
-  // Carrega dados mock pela primeira vez
-  agents = gerarDadosMock();
+  /*// Carrega dados mock pela primeira vez
+  agents = gerarDadosMock(); // essa linha é parte de uma versão mais antiga
 
   // Atualiza os dados mock a cada 2 segundos
   setInterval(() => {
     mockFetchAgents().then((data) => {
       agents = data;
     });
-  }, 2000);
+  }, 2000);*/
 }
 
 function draw() {
   background(240);
 
+  // Atualizar dados da API a cada N frames
+  if (frameCounter % FETCH_INTERVAL_FRAMES === 0) {
+    fetchAgentsFromAPI()
+      .then(data => {
+        agents = data;
+      })
+      .catch(error => {
+        console.error('Failed to fetch agents:', error);
+      });
+  }
+
+  // Desenhar os agentes
   for (let agent of agents) {
+    ellipse(agent.x, agent.y, 20, 20); // Exemplo simples de visualização
+  }
+
+  frameCounter++;
+  /*for (let agent of agents) {
     fill(100, 150, 255);
     ellipse(agent.x, agent.y, 30, 30);
 
     fill(0);
     textAlign(CENTER, CENTER);
     text(agent.id, agent.x, agent.y);
-  }
+  }*/
 }
 
+/*
 class Agent {
   constructor(x, y) {
     this.x = x;
@@ -82,3 +113,4 @@ class Agent {
     ellipse(this.x, this.y, this.size);
   }
 }
+*/
