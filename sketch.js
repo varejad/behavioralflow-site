@@ -76,7 +76,7 @@ function drawAgent(agent) {
   //    (-10, 10) → canto inferior esquerdo
   //    (10, 10)  → canto inferior direito
   //    (0, -15)  → ponta superior (aponta para a direção do ângulo após rotação)
-  triangle(-10, 10, 10, 10, 0, -15);
+  triangle(-7, -7, -7, 7, 13, 0);
 
   pop(); // Restaura o estado do canvas (volta à posição original, sem rotação)
 }
