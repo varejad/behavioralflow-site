@@ -43,7 +43,7 @@ function draw() {
 function drawAgent(agent) {
   push(); // Salva o estado atual do canvas (posição, rotação, etc.)
 
-  // translate(agent.positionX, agent.positionY); // Move o sistema de coordenadas para a posição (x, y) do agente
+  translate(agent.positionX, agent.positionY); // Move o sistema de coordenadas para a posição (x, y) do agente
 
   // rotate(agent.angle); // Rotaciona o canvas em torno do ponto (x, y)
 
