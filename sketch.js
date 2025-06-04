@@ -43,24 +43,14 @@ function draw() {
 function drawAgent(agent) {
   push(); // Salva o estado atual do canvas (posição, rotação, etc.)
 
-  translate(agent.positionX, agent.positionY); // Move o sistema de coordenadas para a posição (x, y) do agente
-
-  // rotate(agent.angle); // Rotaciona o canvas em torno do ponto (x, y)
+  //translate(agent.positionX, agent.positionY); // Move o sistema de coordenadas para a posição (x, y) do agente
 
   // Corpo do agente (círculo)
   fill(agent.color || "#cccccc"); // fallback para cinza se não vier nada
-  ellipse(0, 0, 20, 20);
+  ellipse(agent.positionX, agent.positionY, 20, 20);
 
   fill(agent.circle_color); // Define a cor do agente
-  ellipse(0, 0, 10, 10);
-  // noStroke();         // Remove a borda do desenho
-  // Desenha um triângulo apontando para cima (posição padrão antes da rotação)
-  //    Os três pontos do triângulo são:
-  //    (-10, 10) → canto inferior esquerdo
-  //    (10, 10)  → canto inferior direito
-  //    (0, -15)  → ponta superior (aponta para a direção do ângulo após rotação)
-  // triangle(-10, 10, 10, 10, 0, -15);
-  // triangle(-7, -7, -7, 7, 13, 0);
-
+  ellipse(agent.positionX, agent.positionY, 10, 10);
+ 
   pop(); // Restaura o estado do canvas (volta à posição original, sem rotação)
 }
