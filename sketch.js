@@ -20,6 +20,16 @@ function setup() {
 function draw() {
   background(240);
 
+  // teste com quadrado no meio da tela
+  let size = 100;
+  let x = width / 2 - size / 2;
+  let y = height / 2 - size / 2;
+
+  fill(0, 0, 255, 100); // azul transparente
+  noStroke();
+  rect(x, y, size, size);
+  // fim do teste
+
   // Atualizar dados da API a cada N frames
   if (frameCounter % FETCH_INTERVAL_FRAMES === 0) {
     fetchAgentsFromAPI()
@@ -42,8 +52,6 @@ function draw() {
 
 function drawAgent(agent) {
   push(); // Salva o estado atual do canvas (posição, rotação, etc.)
-
-  //translate(agent.positionX, agent.positionY); // Move o sistema de coordenadas para a posição (x, y) do agente
 
   // Corpo do agente (círculo)
   fill(agent.color || "#cccccc"); // fallback para cinza se não vier nada
