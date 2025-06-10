@@ -26,7 +26,7 @@ function draw() {
   let y = height / 2 - size / 2;
 
   noFill(); // sem cor
-  Stroke(0);
+  stroke(0);
   strokeWeight(2); // espessura da borda (opcional)
   rect(x, y, size, size);
   // fim do teste
