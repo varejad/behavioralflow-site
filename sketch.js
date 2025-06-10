@@ -18,7 +18,7 @@ function setup() {
 }
 
 function draw() {
-  background(240);
+  background(230);
 
   // teste com quadrado no meio da tela
   let size = 100;
