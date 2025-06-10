@@ -25,8 +25,9 @@ function draw() {
   let x = width / 2 - size / 2;
   let y = height / 2 - size / 2;
 
-  fill(0, 0, 255, 100); // azul transparente
-  noStroke();
+  noFill(); // sem cor
+  Stroke(0);
+  strokeWeight(2); // espessura da borda (opcional)
   rect(x, y, size, size);
   // fim do teste
 
