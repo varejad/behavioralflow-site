@@ -1,5 +1,5 @@
-let agentStates = []; // preenchido via Pyodide
-let agents = pyodide.globals.get("agents");  // JS acessa variável Python
+//let agentStates = []; // preenchido via Pyodide
+let agents = []//pyodide.globals.get("agents");  // JS acessa variável Python, preenchido via Pyodide
 
 function setup() {
   createCanvas(600, 400);
@@ -12,6 +12,21 @@ function setup() {
 
 function draw() {
   background(230);
+  
+/*
+  // Atualiza os agentes direto da memória Python
+  try {
+    agents = pyodide.globals.get("agents").toJs();
+  } catch (e) {
+    console.log("Aguardando Pyodide...");
+    return;
+  }
+*/
+
+   // Se não tiver agentes ainda, espere
+  if (!agents || agents.length === 0) {
+    return;
+  }
 
   for (let agent of agents) {
     drawAgent(agent);
@@ -29,7 +44,7 @@ function updateAgentsFromPyodide() {
     try {
       // Pega a variável Python "agents" e transforma em array JavaScript
       let pyAgents = pyodide.globals.get("agents").toJs();
-      agentStates = Array.from(pyAgents);
+      agents = Array.from(pyAgents);
     } catch (e) {
       console.error("Erro ao acessar agents do Pyodide:", e);
     }

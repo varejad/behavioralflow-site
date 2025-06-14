@@ -28,7 +28,12 @@
   </main>
 
   <script>
-    let pyodideReady = loadPyodide();
+    let pyodide;
+    let pyodideReady = loadPyodide().then((loadedPyodide) => {
+      pyodide = loadedPyodide;
+      return pyodide;
+    });
+
 
     pyodideReady.then(async (pyodide) => {
       try {
