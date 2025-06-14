@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Treine seu Agente</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/pyodide/v0.25.1/full/pyodide.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.0/p5.min.js"></script>
+</head>
+<body>
+  <nav>
+    <a href="index.html">Simulação</a>
+    <a href="sobre.html">Sobre o Projeto</a>
+    <a href="treine.html" class="active">Treine seu Agente</a>
+  </nav>
+
+  <h1>Treine seu Agente</h1>
+
+  <!-- Spinner de carregamento -->
+  <div id="loading">
+    <div class="spinner"></div>
+    <p>Carregando Pyodide e inicializando agentes...</p>
+  </div>
+
+  <main>
+    <!-- O canvas será inserido aqui -->
+  </main>
+
+  <script>
+    let pyodideReady = loadPyodide();
+
+    pyodideReady.then(async (pyodide) => {
+      try {
+        const code = `
+import micropip
+await micropip.install("behavioralflow")
+
+from behavioralflow import Aprendente
+agents = [{"x": 100, "y": 150, "color": "red"}, {"x": 200, "y": 200, "color": "blue"}]
+        `;
+        await pyodide.runPythonAsync(code);
+      } catch (err) {
+        console.error("Erro ao rodar código Python:", err);
+      }
+
+      // Esconde o carregamento
+      document.getElementById("loading").style.display = "none";
+
+      // Carrega o sketch do p5.js
+      const script = document.createElement("script");
+      script.src = "treine-sketch.js";
+      document.body.appendChild(script);
+    });
+  </script>
+</body>
+</html>

@@ -38,3 +38,11 @@ main.sobre {
 main.sobre section {
   margin-bottom: 30px;
 }
+
+#loading {
+  font-size: 18px;
+  color: #555;
+  text-align: center;
+  margin-top: 20px;
+}
+
