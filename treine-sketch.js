@@ -34,7 +34,6 @@ function draw() {
 
    // Se não tiver agentes ainda, espere
   if (!agents || agents.length === 0) {
-    console.log("espera")
     return;
   }
 
@@ -44,8 +43,11 @@ function draw() {
 }
 
 function drawAgent(agent) {
-  fill(agent.color || "blue");
-  noStroke();
-  ellipse(agent.x, agent.y, 20, 20);
+   // Corpo do agente (círculo)
+  fill(agent.color || "#cccccc"); // fallback para cinza se não vier nada
+  ellipse(agent.positionX, agent.positionY, 20, 20);
+
+  fill(agent.circle_color); // Define a cor do agente
+  ellipse(agent.positionX, agent.positionY, 10, 10);
 }
 
