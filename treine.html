@@ -31,7 +31,7 @@
       try {
         const code = `
 
-agents = [{"x": 100, "y": 150, "color": "red"}, {"x": 200, "y": 200, "color": "blue"}]
+agents = [{"x": 100, "y": 150, "color": "red"}]
         `;
         await pyodide.runPythonAsync(code);
       } catch (err) {

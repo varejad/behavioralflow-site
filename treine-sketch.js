@@ -1,11 +1,19 @@
-let agents = []//pyodide.globals.get("agents");  // JS acessa variável Python, preenchido via Pyodide
+let agents = []
 
 function updateAgentsFromPyodide() {
   if (typeof pyodide !== "undefined") {
     try {
-      // Pega a variável Python "agents" e transforma em array JavaScript
-      let pyAgents = pyodide.globals.get("agents").toJs();
-      agents = Array.from(pyAgents);
+      // Pega a variável Python "agents" e transforma em array JavaScript (virou um array onde cada item é um array de chaves e valores)
+      let pyAgents = pyodide.globals.get("agents").toJs({dict_converter: Object});
+
+      // transformar o array de arrays recebido acima em um objeto JS
+      agents = pyAgents.map(arrayOfPairs => {
+      // Verificação opcional, mas boa prática, caso algum item não seja um array de pares
+      if (Array.isArray(arrayOfPairs)) {
+        return Object.fromEntries(arrayOfPairs);
+      }
+      return arrayOfPairs; // Retorna como está se não for um array (segurança)
+      });
     } catch (e) {
       console.error("Erro ao acessar agents do Pyodide:", e);
     }
@@ -13,7 +21,6 @@ function updateAgentsFromPyodide() {
 }
 
 function setup() {
-  console.log("setup iniciado");
   createCanvas(600, 400);
 
   // Atualiza os agentes logo no início
@@ -24,16 +31,6 @@ function setup() {
 
 function draw() {
   background(230);
-  
-/*
-  // Atualiza os agentes direto da memória Python
-  try {
-    agents = pyodide.globals.get("agents").toJs();
-  } catch (e) {
-    console.log("Aguardando Pyodide...");
-    return;
-  }
-*/
 
    // Se não tiver agentes ainda, espere
   if (!agents || agents.length === 0) {
@@ -42,13 +39,11 @@ function draw() {
   }
 
   for (let agent of agents) {
-    console.log("chamar drawAgent")
     drawAgent(agent);
   }
 }
 
 function drawAgent(agent) {
-  console.log(agent.x)
   fill(agent.color || "blue");
   noStroke();
   ellipse(agent.x, agent.y, 20, 20);
