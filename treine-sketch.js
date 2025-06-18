@@ -1,8 +1,12 @@
 let agents = []
 
-function updateAgentsFromPyodide() {
+async function updateAgentsFromPyodide() {
+  //const start = performance.now();
+
   if (typeof pyodide !== "undefined") {
     try {
+      await pyodide.runPythonAsync("simular_em_loop()")
+
       // Pega a variável Python "agents" e transforma em array JavaScript (virou um array onde cada item é um array de chaves e valores)
       let pyAgents = pyodide.globals.get("agents").toJs({dict_converter: Object});
 
@@ -18,6 +22,9 @@ function updateAgentsFromPyodide() {
       console.error("Erro ao acessar agents do Pyodide:", e);
     }
   }
+  //const end = performance.now();
+  //console.log(`Execução do passo: ${Math.round(end - start)} ms`);
+  setTimeout(updateAgentsFromPyodide, 20);
 }
 
 function setup() {
@@ -26,12 +33,11 @@ function setup() {
   // Atualiza os agentes logo no início
   updateAgentsFromPyodide();
 
-  setInterval(updateAgentsFromPyodide, 250);
+  //setInterval(updateAgentsFromPyodide, 250);
 }
 
 function draw() {
   background(230);
-
    // Se não tiver agentes ainda, espere
   if (!agents || agents.length === 0) {
     return;

@@ -33,8 +33,6 @@
         const code = `
 import micropip
 await micropip.install("behavioralflow")
-import math
-import threading
 import time
 from behavioralflow.core import Aprendente
 
@@ -95,45 +93,21 @@ class Agents(Aprendente):
     def set_consequence(self):
         pass
 
-    # Facilita transformar as informações em dicionário para passar para get_statess()
-    def to_dict(self):
-        return {
-            "positionX": self.positionX,
-            "positionY": self.positionY,
-            "ação atual": self._acao_atual,
-            "antecedente": self.antecedente_atual,
-            "color": self.color,
-            "circle_color": self.circle_color #ACABEI DE ADICIONAR ESSE
-        }
-
 # Criando dois agentes
 agents = [
     Agents(responses, prob_variacao=0.0, positionX=50, positionY=50, color="#5690E6"),
-    Agents(responses, prob_variacao=0.0, positionX=150, positionY=50, color="#B91CBE"),
 ]
 
 # Loop de simulação
 def simular_em_loop():
-    while True:
-        for agent in agents:
-            agent.previousPositionY = agent.positionY
-            agent.previousPositionX = agent.positionX
-            context = agent.set_context()
-            agent.to_respond(context)
-            agent.set_consequence()
-        time.sleep(1/PASSOS_POR_SEGUNDO)  # PASSOS_POR_SEGUNDO = 20, logo 50ms por passo
+    for agent in agents:
+        agent.previousPositionY = agent.positionY
+        agent.previousPositionX = agent.positionX
+        context = agent.set_context()
+        agent.to_respond(context)
+        agent.set_consequence()
+    #time.sleep(1/PASSOS_POR_SEGUNDO)  # PASSOS_POR_SEGUNDO = 20, logo 50ms por passo
 
-# Iniciar thread do loop
-#threading.Thread(target=simular_em_loop, daemon=True).start()
-
-# Retorna o JSON com todos os dados a serem desenhados no canvaJS
-def get_states():
-    return [agent.to_dict() for agent in agents]
-    #return[{"id": 1, "x": 50, "y": 50}, {"id": 2, "x": 150, "y": 50}]
-
-def get_learning():
-    print([agent._antecedentes_e_respostas for agent in agents])
-    return [{"Aprendizado":{str(k): v for k, v in agent._antecedentes_e_respostas.items()}} for agent in agents]
         `;
         await pyodide.runPythonAsync(code);
       } catch (err) {
