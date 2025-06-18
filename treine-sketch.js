@@ -50,4 +50,3 @@ function drawAgent(agent) {
   fill(agent.circle_color); // Define a cor do agente
   ellipse(agent.positionX, agent.positionY, 10, 10);
 }
-
