@@ -16,7 +16,18 @@
   <h1>Treine seu Agente</h1>
 
   <main>
-    <!-- O canvas será inserido aqui -->
+    <div>
+      <div id="simContainer">
+        <!-- O canvas será criado e inserido aqui pelo p5.js -->
+      </div>
+
+      <!-- <button id="startBtn" onclick="updateAgentsFromPyodide();">Iniciar Simulação</button> -->
+    
+      <div id="controls">
+        <button onclick="pyodide.globals.get('agents[0].reforcar')(100)">Recompensa!</button>
+      </div>
+    </div>
+    
   </main>
 
   <!-- Scripts externos: carregam primeiro -->
@@ -38,7 +49,7 @@ from behavioralflow.core import Aprendente
 
 PASSOS_POR_SEGUNDO = 20  # 1 segundo = 20 passos (com loop de 0.05s)
 
-WIDTH = 600
+WIDTH = 400
 HEIGHT = 400
 
 responses = {("cima",):[0,6],
@@ -60,7 +71,7 @@ class Agents(Aprendente):
         self.previousPositionY = positionY
     
     def set_context(self):
-        context = (self.positionX, self.positionY)
+        context = ("sem contexto",)
         return context
 
     # Executa as ações
@@ -110,6 +121,10 @@ def simular_em_loop():
 
         `;
         await pyodide.runPythonAsync(code);
+
+        // Ajuste de variáveis python que controlam o 'mundo infinto'
+        pyodide.globals.set("WIDTH", width);
+        pyodide.globals.set("HEIGHT", height);
       } catch (err) {
         console.error("Erro ao rodar código Python:", err);
       }

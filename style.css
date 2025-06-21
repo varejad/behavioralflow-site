@@ -59,5 +59,50 @@ main.sobre section {
   0%   { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+/* Estilo para a área de controle */
+#controls {
+  margin: 1rem auto;
+  padding: 1rem;
+  max-width: 600px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+  background-color: #f2f2f2;
+  border-radius: 8px;
+}
 
+/* Estilo básico do botão */
+#controls button {
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
+  border: none;
+  background-color: #0077cc;
+  color: white;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
 
+#controls button:hover {
+  background-color: #005fa3;
+}
+
+/* Ajuste para telas pequenas */
+@media (max-width: 600px) {
+  #controls {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  #controls button {
+    width: 100%;
+  }
+}
+#simContainer {
+  display: flex;
+  flex-direction: column;  /* um embaixo do outro */
+  align-items: center;     /* centraliza na horizontal */
+  gap: 1rem;               /* espaço entre os elementos */
+  padding: 1rem;
+}
