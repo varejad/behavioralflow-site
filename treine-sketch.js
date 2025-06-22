@@ -1,9 +1,11 @@
 let agents = []
+let agent;
+
 
 async function setInitialConditions() {
+agent = pyodide.globals.get("agents").get(0);
 pyodide.globals.set("WIDTH", width);
 pyodide.globals.set("HEIGHT", height);
-console.log("width = ", width, "\nheigth = ", height)
 }
 
 async function updateAgentsFromPyodide() {
@@ -27,14 +29,14 @@ async function updateAgentsFromPyodide() {
     } catch (e) {
       console.error("Erro ao acessar agents do Pyodide:", e);
     }
-  } else {console.log("tessstee")}
+  } else {console.log("pyodide ainda não iniciado")}
   //const end = performance.now();
   //console.log(`Execução do passo: ${Math.round(end - start)} ms`);
   setTimeout(updateAgentsFromPyodide, 20);
 }
 
 function setup() {
-  width = Math.min(windowWidth, 600);
+  width = Math.min(windowWidth - 10, 600);
   height = Math.min(windowHeight/2, 800);
   let canvas = createCanvas(width, height);
   canvas.parent("simContainer");

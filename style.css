@@ -99,6 +99,7 @@ main.sobre section {
     width: 100%;
   }
 }
+
 #simContainer {
   display: flex;
   flex-direction: column;  /* um embaixo do outro */

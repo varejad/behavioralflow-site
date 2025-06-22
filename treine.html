@@ -24,10 +24,10 @@
       <!-- <button id="startBtn" onclick="updateAgentsFromPyodide();">Iniciar Simulação</button> -->
     
       <div id="controls">
-        <button onclick="pyodide.globals.get('agents[0].reforcar')(100)">Recompensa!</button>
+        <button onclick="Reflect.get(agent, 'reforcar')(3)">Recompensa!</button>
+        <button onclick="Reflect.get(agent, 'reforcar')(-3);">Punição!</button>
       </div>
     </div>
-    
   </main>
 
   <!-- Scripts externos: carregam primeiro -->
@@ -69,6 +69,7 @@ class Agents(Aprendente):
         self.circle_color = "#ffffff"
         self.previousPositionX = positionX
         self.previousPositionY = positionY
+        self.reinforcement = 0
     
     def set_context(self):
         context = ("sem contexto",)
@@ -102,7 +103,10 @@ class Agents(Aprendente):
         self.passos_restantes -= 1
     
     def set_consequence(self):
-        pass
+      if self.reinforcement != 0:
+          self.reforcar(self.reinforcement)
+      
+      self.reinforcement = 0
 
 # Criando dois agentes
 agents = [
@@ -122,18 +126,19 @@ def simular_em_loop():
         `;
         await pyodide.runPythonAsync(code);
 
-        // Ajuste de variáveis python que controlam o 'mundo infinto'
-        pyodide.globals.set("WIDTH", width);
-        pyodide.globals.set("HEIGHT", height);
       } catch (err) {
         console.error("Erro ao rodar código Python:", err);
       }
       // Torna acessível no escopo global
       window.pyodide = pyodide;
+
+      setInitialConditions();
     }
 
     init();
+
   </script>
+
   <script src="treine-sketch.js"></script>
 </body>
 </html>
