@@ -69,7 +69,6 @@ class Agents(Aprendente):
         self.circle_color = "#ffffff"
         self.previousPositionX = positionX
         self.previousPositionY = positionY
-        self.reinforcement = 0
     
     def set_context(self):
         context = ("sem contexto",)
@@ -103,10 +102,7 @@ class Agents(Aprendente):
         self.passos_restantes -= 1
     
     def set_consequence(self):
-      if self.reinforcement != 0:
-          self.reforcar(self.reinforcement)
-      
-      self.reinforcement = 0
+      pass
 
 # Criando dois agentes
 agents = [
