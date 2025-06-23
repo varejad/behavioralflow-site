@@ -22,6 +22,7 @@ async function setInitialConditionsAndStart() {
   pyodide.globals.set("HEIGHT", canvaHeight);
   document.getElementById("main").style.display = "block"; // mostra a div
   document.getElementById("setAgent").style.display = "none";   // esconde o botão
+document.getElementById("titulo").textContent = "Treine ${agentName}"
 
   updateAgentsFromPyodide();
 }
