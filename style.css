@@ -41,8 +41,9 @@ main.sobre section {
 
 #loading {
   text-align: center;
-  margin-top: 40px;
-  color: #444;
+  margin-top: 2em;
+  font-weight: bold;
+  font-size: 1.2em;
 }
 
 .spinner {
@@ -106,4 +107,8 @@ main.sobre section {
   align-items: center;     /* centraliza na horizontal */
   gap: 1rem;               /* espaço entre os elementos */
   padding: 1rem;
+}
+
+#main {
+  display: none;
 }

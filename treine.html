@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Treinando meu agente</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -16,18 +16,41 @@
   <h1>Treine seu Agente</h1>
 
   <main>
-    <div>
+     <!-- Indicador de carregamento -->
+    <div id="loading">
+      <p>Carregando, por favor aguarde...</p>
+    </div>
+
+    <!-- Interface principal (escondida inicialmente) -->
+    <div id="main">
       <div id="simContainer">
         <!-- O canvas será criado e inserido aqui pelo p5.js -->
       </div>
-
-      <!-- <button id="startBtn" onclick="updateAgentsFromPyodide();">Iniciar Simulação</button> -->
-    
       <div id="controls">
+        <!-- tentar fazer usando codigo pyodide sincrono -->
+        <!-- tentar fazer indicando no metodo consequence a quantidade de reforco -->
         <button onclick="Reflect.get(agent, 'reforcar')(3)">Recompensa!</button>
         <button onclick="Reflect.get(agent, 'reforcar')(-3);">Punição!</button>
       </div>
     </div>
+
+    <!-- Botão de início (escondido até carregar) -->
+    <div id="setAgent" style="text-align: center; margin-top: 1em; display: none;">
+      <label for="agentColor">Cor do agente:</label>
+      <input type="color" id="agentColor" name="agentColor" value="#5690E6">
+
+      <br><br>
+
+      <label for="agentName">Nome do agente:</label>
+      <input type="text" id="agentName" name="agentName" placeholder="Digite um nome">
+
+      <br><br>
+
+      <button id="startBtn" onclick="setInitialConditionsAndStart();">
+        🚀 Iniciar 
+      </button>
+    </div>
+
   </main>
 
   <!-- Scripts externos: carregam primeiro -->
@@ -59,7 +82,7 @@ responses = {("cima",):[0,6],
              ("parado",):[0,6]}
 
 class Agents(Aprendente):
-    def __init__(self, acoes, variar=False, prob_variacao=0.25, positionX = 0, positionY = 0, angle = 0, color="#000000"):
+    def __init__(self, acoes, variar=False, prob_variacao=0.25, positionX = 0, positionY = 0, angle = 0, color="#000000", name = ""):
         super().__init__(acoes, variar, prob_variacao)
         self.positionX = positionX
         self.positionY = positionY
@@ -69,6 +92,7 @@ class Agents(Aprendente):
         self.circle_color = "#ffffff"
         self.previousPositionX = positionX
         self.previousPositionY = positionY
+        self.name = ""
     
     def set_context(self):
         context = ("sem contexto",)
@@ -105,9 +129,9 @@ class Agents(Aprendente):
       pass
 
 # Criando dois agentes
-agents = [
-    Agents(responses, prob_variacao=0.0, positionX=50, positionY=50, color="#5690E6"),
-]
+#agents = [
+#    Agents(responses, prob_variacao=0.0, positionX=50, positionY=50, color="#5690E6"),
+#]
 
 # Loop de simulação
 def simular_em_loop():
@@ -128,7 +152,9 @@ def simular_em_loop():
       // Torna acessível no escopo global
       window.pyodide = pyodide;
 
-      setInitialConditions();
+      // Tudo carregado — esconder "Carregando..." e mostrar botão de iniciar
+      document.getElementById("loading").style.display = "none";
+      document.getElementById("setAgent").style.display = "block";
     }
 
     init();
@@ -136,5 +162,6 @@ def simular_em_loop():
   </script>
 
   <script src="treine-sketch.js"></script>
+  
 </body>
 </html>

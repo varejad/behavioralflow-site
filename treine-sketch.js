@@ -1,11 +1,29 @@
 let agents = []
 let agent;
+let canvaWidth;
+let canvaHeight;
 
 
-async function setInitialConditions() {
-agent = pyodide.globals.get("agents").get(0);
-pyodide.globals.set("WIDTH", width);
-pyodide.globals.set("HEIGHT", height);
+async function setInitialConditionsAndStart() {
+  const selectedColor = document.getElementById("agentColor").value;
+  const agentName = document.getElementById("agentName").value || "Sem nome";
+  // Passa os valores do JS para variáveis globais no Python
+  pyodide.globals.set("js_color", selectedColor);
+  pyodide.globals.set("js_name", agentName);
+
+  // Agora usa essas variáveis no código Python
+  await pyodide.runPythonAsync(`
+    agents = [
+      Agents(responses, prob_variacao=0.0, positionX=50, positionY=50, color=js_color, name=js_name),
+    ]
+  `);
+  agent = pyodide.globals.get("agents").get(0);
+  pyodide.globals.set("WIDTH", canvaWidth);
+  pyodide.globals.set("HEIGHT", canvaHeight);
+  document.getElementById("main").style.display = "block"; // mostra a div
+  document.getElementById("setAgent").style.display = "none";   // esconde o botão
+
+  updateAgentsFromPyodide();
 }
 
 async function updateAgentsFromPyodide() {
@@ -36,13 +54,13 @@ async function updateAgentsFromPyodide() {
 }
 
 function setup() {
-  width = Math.min(windowWidth - 10, 600);
-  height = Math.min(windowHeight/2, 800);
-  let canvas = createCanvas(width, height);
+  canvaWidth = Math.min(windowWidth - 10, 600);
+  canvaHeight = Math.min(windowHeight/2, 800);
+  let canvas = createCanvas(canvaWidth, canvaHeight);
   canvas.parent("simContainer");
 
   // Atualiza os agentes logo no início
-  updateAgentsFromPyodide();
+  //updateAgentsFromPyodide();
 
   //setInitialConditions();
 }
