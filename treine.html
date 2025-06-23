@@ -29,7 +29,7 @@
       <div id="controls">
         <!-- tentar fazer usando codigo pyodide sincrono -->
         <!-- tentar fazer indicando no metodo consequence a quantidade de reforco -->
-        <button onclick="Reflect.get(agent, 'reforcar')(3)">Recompensa!</button>
+        <button onclick="Reflect.get(agent, 'reforcar')(5); console.log('reforçado' + Reflect.get(agent, '_antecedentes_e_respostas'))">Recompensa!</button>
         <button onclick="Reflect.get(agent, 'reforcar')(-3);">Punição!</button>
       </div>
     </div>
@@ -92,7 +92,7 @@ class Agents(Aprendente):
         self.circle_color = "#ffffff"
         self.previousPositionX = positionX
         self.previousPositionY = positionY
-        self.name = ""
+        self.name = name
     
     def set_context(self):
         context = ("sem contexto",)
@@ -104,6 +104,7 @@ class Agents(Aprendente):
             self.circle_color = "#FFFFFF"
             self.proxima_acao(context)
             self.passos_restantes = PASSOS_POR_SEGUNDO
+            print(self._acao_atual)
 
         # Executa a ação atual
         if self._acao_atual[0] == "cima":
@@ -128,10 +129,6 @@ class Agents(Aprendente):
     def set_consequence(self):
       pass
 
-# Criando dois agentes
-#agents = [
-#    Agents(responses, prob_variacao=0.0, positionX=50, positionY=50, color="#5690E6"),
-#]
 
 # Loop de simulação
 def simular_em_loop():
