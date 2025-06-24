@@ -3,6 +3,13 @@ let agent;
 let canvaWidth;
 let canvaHeight;
 
+function enviarInstrucao() {
+  const instrucao = document.getElementById("inputInstrucao").value;
+  
+  const instrucaoPyTuple = pyodide.toPy([instrucao]);
+  Reflect.set(agent, "antecedente_atual", instrucaoPyTuple);
+  console.log("Instrução enviada:", instrucaoPyTuple);
+}
 
 async function setInitialConditionsAndStart() {
   const selectedColor = document.getElementById("agentColor").value;

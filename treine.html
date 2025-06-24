@@ -27,10 +27,20 @@
         <!-- O canvas será criado e inserido aqui pelo p5.js -->
       </div>
       <div id="controls">
-        <!-- tentar fazer usando codigo pyodide sincrono -->
-        <!-- tentar fazer indicando no metodo consequence a quantidade de reforco -->
-        <button onclick="Reflect.get(agent, 'reforcar')(5); console.log('reforçado' + Reflect.get(agent, '_antecedentes_e_respostas'))">Recompensa!</button>
-        <button onclick="Reflect.get(agent, 'reforcar')(-3);">Punição!</button>
+        <!-- Entrada de instrução -->
+        <div id="instrucao" class="control-box">
+          <label for="inputInstrucao">Instrução:</label>
+          <input type="text" id="inputInstrucao" maxlength="50" placeholder="Digite uma instrução...">
+          <button onclick="enviarInstrucao()">Enviar</button>
+        </div>
+
+        <!-- botões de reforçamento e punição -->
+        <div id="botoesReP" class="control-box horizontal">
+          <!-- tentar fazer usando codigo pyodide sincrono -->
+          <!-- tentar fazer indicando no metodo consequence a quantidade de reforco -->
+          <button onclick="Reflect.get(agent, 'reforcar')(5); console.log('reforçado' + Reflect.get(agent, '_antecedentes_e_respostas'))">Recompensa!</button>
+          <button onclick="Reflect.get(agent, 'reforcar')(-3);">Punição!</button>
+        </div>
       </div>
     </div>
 
@@ -93,10 +103,11 @@ class Agents(Aprendente):
         self.previousPositionX = positionX
         self.previousPositionY = positionY
         self.name = name
+        self.antecedente_atual = ("sem contexto",)
     
-    def set_context(self):
-        context = ("sem contexto",)
-        return context
+    #def set_context(self):
+        #context = ("sem contexto",)
+        #return context
 
     # Executa as ações
     def to_respond(self, context):
@@ -135,8 +146,8 @@ def simular_em_loop():
     for agent in agents:
         agent.previousPositionY = agent.positionY
         agent.previousPositionX = agent.positionX
-        context = agent.set_context()
-        agent.to_respond(context)
+        #context = agent.set_context()
+        agent.to_respond(agent.antecedente_atual)
         agent.set_consequence()
     #time.sleep(1/PASSOS_POR_SEGUNDO)  # PASSOS_POR_SEGUNDO = 20, logo 50ms por passo
 
