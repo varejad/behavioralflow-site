@@ -103,7 +103,7 @@ class Agents(Aprendente):
         if self.passos_restantes == 0:
             self.circle_color = "#FFFFFF"
             self.proxima_acao(context)
-            self.passos_restantes = PASSOS_POR_SEGUNDO
+            self.passos_restantes = PASSOS_POR_SEGUNDO + (PASSOS_POR_SEGUNDO/2) # 1seg e meio por ação
             print(self._acao_atual)
 
         # Executa a ação atual
