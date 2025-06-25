@@ -5,10 +5,11 @@ let canvaHeight;
 
 function enviarInstrucao() {
   const instrucao = document.getElementById("inputInstrucao").value;
-  
-  const instrucaoPyTuple = pyodide.toPy([instrucao]);
-  Reflect.set(agent, "antecedente_atual", instrucaoPyTuple);
-  console.log("Instrução enviada:", instrucaoPyTuple);
+  pyodide.runPython(`agents[0].antecedente_atual = ("${instrucao}",)`);
+
+  //const instrucaoPyTuple = pyodide.toPy([instrucao]);
+  //Reflect.set(agent, "antecedente_atual", instrucaoPyTuple);
+  //console.log("Instrução enviada:", instrucaoPyTuple);
 }
 
 async function setInitialConditionsAndStart() {
@@ -58,6 +59,7 @@ async function updateAgentsFromPyodide() {
   } else {console.log("pyodide ainda não iniciado")}
   //const end = performance.now();
   //console.log(`Execução do passo: ${Math.round(end - start)} ms`);
+
   setTimeout(updateAgentsFromPyodide, 20);
 }
 
