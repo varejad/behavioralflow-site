@@ -85,11 +85,11 @@ PASSOS_POR_SEGUNDO = 20  # 1 segundo = 20 passos (com loop de 0.05s)
 WIDTH = 400
 HEIGHT = 400
 
-responses = {("cima",):[0,6],
-             ("baixo",):[0,6],
-             ("esq",):[0,6],
-             ("dir",):[0,6],
-             ("parado",):[0,6]}
+responses = {("cima",):[5,15],
+             ("baixo",):[5,15],
+             ("esq",):[5,15],
+             ("dir",):[5,15],
+             ("parado",):[0,15]}
 
 class Agents(Aprendente):
     def __init__(self, acoes, variar=False, prob_variacao=0.25, positionX = 0, positionY = 0, angle = 0, color="#000000", name = ""):
@@ -141,6 +141,7 @@ def simular_em_loop():
         if agent.passos_restantes == 0:
           agent.set_consequence()
           # INICIA NOVO CICLO DE COMPORTAMENTO ABAIXO
+          agent.circle_color = "#ffffff"
           #context = agent.set_context()
           agent.proxima_acao(agent.antecedente_atual)        
           agent.passos_restantes = PASSOS_POR_SEGUNDO + (PASSOS_POR_SEGUNDO/2) # 1seg e meio por ação

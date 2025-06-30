@@ -3,20 +3,22 @@ let agent;
 let canvaWidth;
 let canvaHeight;
 
-function reforcar(magnitudeDeReforco=6){
+function reforcar(magnitudeDeReforco=12){
     pyodide.runPython(`
 magnitude_de_reforco = ${magnitudeDeReforco}
 agents[0].consequence += magnitude_de_reforco
+agents[0].circle_color = "#00cc03"
 print("reforçou")
 `)
 }
 
-async function punir(magnitudeDePunicao=3){
+async function punir(magnitudeDePunicao=6){
     pyodide.runPythonAsync(`
 magnitude_de_punicao = ${magnitudeDePunicao}
 if agents[0].respostas_atuais[agents[0]._acao_atual][1] - magnitude_de_punicao > agents[0].respostas_atuais[agents[0]._acao_atual][0]:
   agents[0].reforcar(-3)
   print("puniu")
+  agents[0].circle_color = "#ed1212"
 else:
   print("não puniu")
   `);
@@ -27,9 +29,6 @@ function enviarInstrucao() {
   const instrucao = document.getElementById("inputInstrucao").value;
   pyodide.runPython(`agents[0].antecedente_atual = ("${instrucao}",)`);
 
-  //const instrucaoPyTuple = pyodide.toPy([instrucao]);
-  //Reflect.set(agent, "antecedente_atual", instrucaoPyTuple);
-  //console.log("Instrução enviada:", instrucaoPyTuple);
 }
 
 async function setInitialConditionsAndStart() {
