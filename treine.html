@@ -38,8 +38,8 @@
         <div id="botoesReP" class="control-box horizontal">
           <!-- tentar fazer usando codigo pyodide sincrono -->
           <!-- tentar fazer indicando no metodo consequence a quantidade de reforco -->
-          <button onclick="Reflect.get(agent, 'reforcar')(5); console.log('reforçado' + Reflect.get(agent, '_antecedentes_e_respostas'))">Recompensa!</button>
-          <button onclick="Reflect.get(agent, 'reforcar')(-3);">Punição!</button>
+          <button onclick="reforcar(); console.log('reforçado' + Reflect.get(agent, '_antecedentes_e_respostas'))">Recompensa!</button>
+          <button onclick="punir();">Punição!</button>
         </div>
       </div>
     </div>
@@ -100,23 +100,16 @@ class Agents(Aprendente):
         self.passos_restantes = 0
         self.color = color
         self.circle_color = "#ffffff"
-        self.previousPositionX = positionX
-        self.previousPositionY = positionY
         self.name = name
         self.antecedente_atual = ("sem contexto",)
+        self.consequence = 0
     
     #def set_context(self):
         #context = ("sem contexto",)
         #return context
 
     # Executa as ações
-    def to_respond(self, context):
-        if self.passos_restantes == 0:
-            self.circle_color = "#FFFFFF"
-            self.proxima_acao(context)
-            self.passos_restantes = PASSOS_POR_SEGUNDO + (PASSOS_POR_SEGUNDO/2) # 1seg e meio por ação
-            print(self._acao_atual)
-
+    def to_respond(self, context):          
         # Executa a ação atual
         if self._acao_atual[0] == "cima":
             self.positionY = (self.positionY - 1) % HEIGHT
@@ -138,17 +131,23 @@ class Agents(Aprendente):
         self.passos_restantes -= 1
     
     def set_consequence(self):
-      pass
-
+      if self.consequence != 0:
+        self.reforcar(self.consequence)
+        self.consequence = 0
 
 # Loop de simulação
 def simular_em_loop():
     for agent in agents:
-        agent.previousPositionY = agent.positionY
-        agent.previousPositionX = agent.positionX
-        #context = agent.set_context()
+        if agent.passos_restantes == 0:
+          agent.set_consequence()
+          # INICIA NOVO CICLO DE COMPORTAMENTO ABAIXO
+          #context = agent.set_context()
+          agent.proxima_acao(agent.antecedente_atual)        
+          agent.passos_restantes = PASSOS_POR_SEGUNDO + (PASSOS_POR_SEGUNDO/2) # 1seg e meio por ação
+          print(agent._acao_atual)
+        
         agent.to_respond(agent.antecedente_atual)
-        agent.set_consequence()
+        
     #time.sleep(1/PASSOS_POR_SEGUNDO)  # PASSOS_POR_SEGUNDO = 20, logo 50ms por passo
 
         `;

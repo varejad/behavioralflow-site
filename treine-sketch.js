@@ -3,6 +3,26 @@ let agent;
 let canvaWidth;
 let canvaHeight;
 
+function reforcar(magnitudeDeReforco=6){
+    pyodide.runPython(`
+magnitude_de_reforco = ${magnitudeDeReforco}
+agents[0].consequence += magnitude_de_reforco
+print("reforçou")
+`)
+}
+
+async function punir(magnitudeDePunicao=3){
+    pyodide.runPythonAsync(`
+magnitude_de_punicao = ${magnitudeDePunicao}
+if agents[0].respostas_atuais[agents[0]._acao_atual][1] - magnitude_de_punicao > agents[0].respostas_atuais[agents[0]._acao_atual][0]:
+  agents[0].reforcar(-3)
+  print("puniu")
+else:
+  print("não puniu")
+  `);
+
+}
+
 function enviarInstrucao() {
   const instrucao = document.getElementById("inputInstrucao").value;
   pyodide.runPython(`agents[0].antecedente_atual = ("${instrucao}",)`);
@@ -15,14 +35,10 @@ function enviarInstrucao() {
 async function setInitialConditionsAndStart() {
   const selectedColor = document.getElementById("agentColor").value;
   const agentName = document.getElementById("agentName").value || "Sem nome";
-  // Passa os valores do JS para variáveis globais no Python
-  pyodide.globals.set("js_color", selectedColor);
-  pyodide.globals.set("js_name", agentName);
-
-  // Agora usa essas variáveis no código Python
+  
   await pyodide.runPythonAsync(`
     agents = [
-      Agents(responses, prob_variacao=0.0, positionX=50, positionY=50, color=js_color, name=js_name),
+      Agents(responses, prob_variacao=0.0, positionX=50, positionY=50, color="${selectedColor}", name="${agentName}"),
     ]
   `);
   agent = pyodide.globals.get("agents").get(0);
@@ -36,7 +52,7 @@ async function setInitialConditionsAndStart() {
 }
 
 async function updateAgentsFromPyodide() {
-  //const start = performance.now();
+  const start = performance.now();
 
   if (typeof pyodide !== "undefined") {
     try {
@@ -57,7 +73,7 @@ async function updateAgentsFromPyodide() {
       console.error("Erro ao acessar agents do Pyodide:", e);
     }
   } else {console.log("pyodide ainda não iniciado")}
-  //const end = performance.now();
+  const end = performance.now();
   //console.log(`Execução do passo: ${Math.round(end - start)} ms`);
 
   setTimeout(updateAgentsFromPyodide, 20);
@@ -69,12 +85,7 @@ function setup() {
   let canvas = createCanvas(canvaWidth, canvaHeight);
   canvas.parent("simContainer");
 
-  // Atualiza os agentes logo no início
-  //updateAgentsFromPyodide();
-
-  //setInitialConditions();
 }
-
 
 function draw() {
   background(230);
